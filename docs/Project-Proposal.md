@@ -38,9 +38,9 @@ This version does not have user accounts, roles, payment processing, or producti
 
 | Member | Main responsibility |
 |---|---|
-| Terrel | Database design, SQL scripts, and checking relationships |
-| Tiyana Harden | C# application and connecting the pages to the database |
-| Isa | Page layout, wireframes, and user-facing documentation |
-| Dontrez | Weather API and testing the main workflows |
+| Tiyana Harden | Planning, coordination, and validation |
+| Isa | C# application |
+| Terrell Taylor | SQL and database work |
+| Dontrez | Project structure |
 
-These are our starting roles. We can help each other and adjust the work as needed. Our project start date is October 13, 2026.
+These roles and the October 13, 2026 start date were provided by the team. Team members can help each other as needed.

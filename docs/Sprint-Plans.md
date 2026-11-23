@@ -1,43 +1,41 @@
 # Sprint Plan
 
-We are planning three two-week sprints, starting October 13, 2026. These are target dates, not a record that every task is already finished.
+The team planned three one-week work periods starting October 13, 2026. The due dates below are weekly targets. The project was reported complete on November 22, 2026, after those target dates.
 
 ## Sprint 1: Plan the project and database
 
-**October 13–27, 2026**
+**October 13–20, 2026**
 
-- **Terrel:** work on the tables, keys, relationships, and SQL scripts.
-- **Tiyana:** set up the C# MVC app and connect it to SQLite.
-- **Isa:** sketch the main pages and start the project documentation.
-- **Dontrez:** look into the weather API and plan basic workflow tests.
-- **As a team:** agree on the project scope and create Issues for the work.
+- **Terrell:** work on the tables, relationships, and SQL scripts.
+- **Tiyana:** coordinate the project and help validate requirements.
+- **Isa:** work on the C# application.
+- **Dontrez:** organize the project structure.
+- **As a team:** choose the food pantry project and divide the work.
 
-**Ready to move on when:** the database design is reviewed and a fresh copy of the app can be built.
+**Target:** agree on the project scope and establish the database and application structure.
 
 ## Sprint 2: Build the pantry workflows
 
-**October 28–November 10, 2026**
+**October 21–27, 2026**
 
-- **Terrel:** check that the database relationships and stock reports are correct.
-- **Tiyana:** connect donation intake, inventory, and household distributions.
-- **Isa:** review the forms and page flow, and write the first user instructions.
-- **Dontrez:** try the main workflows, including invalid quantities and low stock.
-- **As a team:** work on branches and ask another member to review pull requests.
+- **Terrell:** continue the SQL and database work.
+- **Tiyana:** coordinate tasks and validate the application requirements.
+- **Isa:** build the C# pantry workflows.
+- **Dontrez:** maintain the project structure.
+- **As a team:** check in on assigned work and resolve issues as they come up.
 
-**Ready to move on when:** the team can record a donation and create a stock-safe distribution using sample data.
+**Target:** connect the application workflows to the pantry database.
 
 ## Sprint 3: Test and prepare the demo
 
-**November 11–24, 2026**
+**October 28–November 3, 2026**
 
-- **Terrel:** run the SQL scripts and check the schema and report queries.
-- **Tiyana:** integrate changes and make sure the app builds and runs.
-- **Isa:** finish the wireframe and user documentation.
-- **Dontrez:** test the weather forecast and the main create/edit/delete workflows.
-- **As a team:** review the project, prepare the demo, and note anything that still needs work.
+- **Terrell:** finish and check the SQL scripts.
+- **Tiyana:** coordinate final validation.
+- **Isa:** finish the C# application.
+- **Dontrez:** keep the project structure organized.
+- **As a team:** test the completed project and prepare it for submission.
 
-**Ready to submit when:** a clean build works, the SQL scripts run, and the team has reviewed the demo and known limitations.
+**Target:** confirm the app and SQL scripts work and finish the project documentation.
 
-## After each sprint
-
-Talk about what went well, what got in the way, and what the team wants to change for the next sprint. Add the actual discussion and decisions to [Meeting Notes](Meeting-Notes.md).
+The meeting dates and the reported completion date are summarized in [Meeting Notes](Meeting-Notes.md). GitHub will show the actual dates when Issues and pull requests are created or closed; this plan does not backdate those records.
