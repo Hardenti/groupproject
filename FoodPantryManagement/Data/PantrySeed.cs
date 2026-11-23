@@ -41,8 +41,8 @@ public static class PantrySeed
         };
         FoodItem apples = new() { Name = "Apples", Unit = "lb", FoodCategory = produce };
         FoodItem rice = new() { Name = "Rice", Unit = "lb", FoodCategory = pantry };
-        FoodItem beans = new() { Name = "Canned beans", Unit = "can", FoodCategory = canned };
-        FoodItem milk = new() { Name = "Shelf-stable milk", Unit = "carton", FoodCategory = dairy };
+        FoodItem beans = new() { Name = "Canned beans", Unit = "can(s)", FoodCategory = canned };
+        FoodItem milk = new() { Name = "Shelf-stable milk", Unit = "carton(s)", FoodCategory = dairy };
         Volunteer volunteer = new() { Name = "Sample Volunteer", Email = "volunteer@example.org" };
         Donation donation = new()
         {
