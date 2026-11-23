@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+**/foodpantry.db
+**/foodpantry.db-shm
+**/foodpantry.db-wal
+.vs/
+*.user
+*.suo

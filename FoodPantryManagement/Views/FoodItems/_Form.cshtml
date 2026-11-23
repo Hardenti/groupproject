@@ -1,0 +1,9 @@
+@model FoodItem
+<form method="post" class="form-panel">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="mb-3"><label asp-for="Name" class="form-label">Food name</label><input asp-for="Name" class="form-control" autocomplete="off" /><span asp-validation-for="Name" class="text-danger"></span></div>
+    <div class="mb-3"><label asp-for="FoodCategoryId" class="form-label">Category</label><select asp-for="FoodCategoryId" asp-items="ViewBag.FoodCategoryId" class="form-select"><option value="">Choose category</option></select><span asp-validation-for="FoodCategoryId" class="text-danger"></span></div>
+    <div class="mb-3"><label asp-for="Unit" class="form-label">Unit (for example, can or lb)</label><input asp-for="Unit" class="form-control" /><span asp-validation-for="Unit" class="text-danger"></span></div>
+    <div class="form-check mb-4"><input asp-for="IsActive" class="form-check-input" /><label asp-for="IsActive" class="form-check-label">Available for donations and distributions</label></div>
+    <button class="btn btn-primary" type="submit">Save food item</button> <a class="btn btn-link" asp-action="Index">Cancel</a>
+</form>

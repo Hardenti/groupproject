@@ -1,0 +1,20 @@
+@model DistributionFormViewModel
+<form method="post" class="form-panel">
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <input asp-for="DistributionId" type="hidden" />
+    <div class="row"><div class="col-md-6 mb-3"><label asp-for="HouseholdId" class="form-label">Household</label><select asp-for="HouseholdId" asp-items="Model.Households" class="form-select"><option value="">Choose household</option></select><span asp-validation-for="HouseholdId" class="text-danger"></span><a asp-controller="Households" asp-action="Create" class="small">Register household</a></div>
+        <div class="col-md-6 mb-3"><label asp-for="PantrySiteId" class="form-label">Pantry site</label><select asp-for="PantrySiteId" asp-items="Model.PantrySites" class="form-select"><option value="">Choose pantry</option></select><span asp-validation-for="PantrySiteId" class="text-danger"></span></div></div>
+    <div class="mb-3"><label asp-for="DistributedAt" class="form-label">Distribution date and time</label><input asp-for="DistributedAt" asp-format="{0:yyyy-MM-ddTHH:mm}" type="datetime-local" class="form-control" /><span asp-validation-for="DistributedAt" class="text-danger"></span></div>
+    <h2 class="h5 mt-4">Items to provide</h2>
+    <p class="small text-muted">Enter quantities to issue. Stock is deducted from the earliest-expiring lots first.</p>
+    <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Food item</th><th>Available</th><th>Quantity to issue</th></tr></thead><tbody>
+    @for (int index = 0; index < Model.Items.Count; index++)
+    {
+        <tr><td><input asp-for="Items[index].FoodItemId" type="hidden" /><span class="fw-semibold">@Model.Items[index].Name</span> <span class="text-muted">(@Model.Items[index].Unit)</span></td>
+            <td>@Model.Items[index].Available.ToString("0.##") @Model.Items[index].Unit</td>
+            <td><input asp-for="Items[index].Quantity" class="form-control" type="number" min="0" max="@Model.Items[index].Available" step="0.01" aria-label="Quantity of @Model.Items[index].Name to issue" /></td></tr>
+    }
+    </tbody></table></div>
+    <div class="mb-4"><label asp-for="Notes" class="form-label">Notes</label><textarea asp-for="Notes" class="form-control" rows="2"></textarea><span asp-validation-for="Notes" class="text-danger"></span></div>
+    <button class="btn btn-primary">Save distribution</button> <a class="btn btn-link" asp-action="Index">Cancel</a>
+</form>

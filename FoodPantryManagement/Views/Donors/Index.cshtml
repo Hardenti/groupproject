@@ -1,0 +1,16 @@
+@model IReadOnlyList<Donor>
+@{ ViewData["Title"] = "Donors"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">COMMUNITY PARTNERS</p><h1 class="h2 mb-0">Donors</h1></div><a class="btn btn-primary" asp-action="Create">Add donor</a></div>
+<partial name="_Alerts" />
+<div class="panel-card">
+    <form method="get" class="search-toolbar mb-3"><div class="search-box"><label for="search" class="form-label">Search donor or email</label><input id="search" name="search" value="@ViewBag.Search" class="form-control" /></div>
+        <div><label for="sort" class="form-label">Sort by</label><select id="sort" name="sort" class="form-select"><option value="name">Name</option><option value="recent" selected="@(ViewBag.Sort == "recent")">Recent donation</option></select></div><button class="btn btn-outline-secondary">Search</button></form>
+    <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Donor</th><th>Email</th><th>Phone</th><th></th></tr></thead><tbody>
+    @foreach (Donor donor in Model)
+    {
+        <tr><td class="fw-semibold">@donor.Name</td><td>@(donor.Email ?? "—")</td><td>@(donor.Phone ?? "—")</td><td class="text-end table-actions"><a asp-action="Edit" asp-route-id="@donor.DonorId" class="btn btn-sm btn-outline-secondary">Edit</a>
+            <form asp-action="Delete" asp-route-id="@donor.DonorId" method="post" class="d-inline" onsubmit="return confirm('Delete this donor?');"><button class="btn btn-sm btn-outline-danger">Delete</button></form></td></tr>
+    }
+    </tbody></table></div>
+    @if (Model.Count == 0) { <p class="empty-note mb-0">No donors matched your search.</p> }
+</div>

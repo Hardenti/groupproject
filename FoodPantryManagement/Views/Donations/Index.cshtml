@@ -1,0 +1,17 @@
+@model IReadOnlyList<Donation>
+@{ ViewData["Title"] = "Donations"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">INCOMING FOOD</p><h1 class="h2 mb-0">Donations</h1></div><a asp-action="Create" class="btn btn-primary">＋ Receive donation</a></div>
+<partial name="_Alerts" />
+<div class="panel-card">
+    <form method="get" class="search-toolbar mb-3"><div class="search-box"><label for="search" class="form-label">Search donor or food item</label><input id="search" name="search" value="@ViewBag.Search" class="form-control" /></div>
+        <div><label for="sort" class="form-label">Sort by</label><select id="sort" name="sort" class="form-select"><option value="recent">Newest first</option><option value="donor" selected="@(ViewBag.Sort == "donor")">Donor</option></select></div><button class="btn btn-outline-secondary">Search</button></form>
+    <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Received</th><th>Donor</th><th>Pantry</th><th>Items</th><th>Notes</th><th></th></tr></thead><tbody>
+    @foreach (Donation donation in Model)
+    {
+        <tr><td>@donation.ReceivedAt.ToString("MMM d, yyyy")</td><td class="fw-semibold">@donation.Donor?.Name</td><td>@donation.PantrySite?.Name</td>
+            <td>@string.Join(", ", donation.Lots.Select(lot => $"{lot.FoodItem?.Name} ({lot.QuantityReceived:0.##})"))</td><td>@(donation.Notes ?? "—")</td>
+            <td class="text-end"><a asp-action="Details" asp-route-id="@donation.DonationId" class="btn btn-sm btn-outline-secondary">Details</a></td></tr>
+    }
+    </tbody></table></div>
+    @if (Model.Count == 0) { <p class="empty-note mb-0">No donations found.</p> }
+</div>

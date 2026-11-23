@@ -1,0 +1,32 @@
+@model IReadOnlyList<FoodItem>
+@{
+    ViewData["Title"] = "Food catalog";
+}
+<div class="page-heading">
+    <div><p class="eyebrow mb-1">PANTRY SETUP</p><h1 class="h2 mb-0">Food catalog</h1></div>
+    <a class="btn btn-primary" asp-action="Create">Add food item</a>
+</div>
+<partial name="_Alerts" />
+<div class="panel-card">
+    <form method="get" class="search-toolbar mb-3">
+        <div class="search-box"><label for="search" class="form-label">Search food or category</label><input id="search" name="search" value="@ViewBag.Search" class="form-control" /></div>
+        <div><label for="sort" class="form-label">Sort by</label><select id="sort" name="sort" class="form-select"><option value="name">Name</option><option value="name-desc" selected="@(ViewBag.Sort == "name-desc")">Name (Z–A)</option><option value="category" selected="@(ViewBag.Sort == "category")">Category</option></select></div>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </form>
+    <div class="table-responsive"><table class="table align-middle mb-0">
+        <thead><tr><th>Food item</th><th>Category</th><th>Unit</th><th>Storage</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        @foreach (FoodItem item in Model)
+        {
+            <tr>
+                <td class="fw-semibold">@item.Name</td><td>@item.FoodCategory?.Name</td><td>@item.Unit</td>
+                <td>@(item.FoodCategory?.RequiresRefrigeration == true ? "Refrigerated" : "Shelf stable")</td>
+                <td>@(item.IsActive ? "Active" : "Inactive")</td>
+                <td class="text-end table-actions"><a asp-action="Edit" asp-route-id="@item.FoodItemId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@item.FoodItemId" method="post" class="d-inline" onsubmit="return confirm('Delete this food item?');"><button class="btn btn-sm btn-outline-danger" type="submit">Delete</button></form></td>
+            </tr>
+        }
+        </tbody>
+    </table></div>
+    @if (Model.Count == 0) { <p class="empty-note mt-3 mb-0">No food items matched your search.</p> }
+</div>

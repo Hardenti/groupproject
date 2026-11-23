@@ -1,0 +1,16 @@
+@model Donation
+@{ ViewData["Title"] = "Donation details"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">INCOMING FOOD</p><h1 class="h2 mb-0">Donation details</h1></div><a asp-action="Index" class="btn btn-outline-secondary">Back to donations</a></div>
+<partial name="_Alerts" />
+<div class="panel-card">
+    <dl class="row mb-4"><dt class="col-sm-3">Donor</dt><dd class="col-sm-9">@Model.Donor?.Name</dd><dt class="col-sm-3">Pantry site</dt><dd class="col-sm-9">@Model.PantrySite?.Name</dd>
+        <dt class="col-sm-3">Received</dt><dd class="col-sm-9">@Model.ReceivedAt.ToString("MMM d, yyyy")</dd><dt class="col-sm-3">Notes</dt><dd class="col-sm-9">@(Model.Notes ?? "—")</dd></dl>
+    <h2 class="h5">Donation items</h2>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Item</th><th>Quantity</th><th>Best before</th></tr></thead><tbody>
+    @foreach (InventoryLot lot in Model.Lots)
+    {
+        <tr><td>@lot.FoodItem?.Name</td><td>@lot.QuantityReceived.ToString("0.##") @lot.FoodItem?.Unit</td><td>@(lot.ExpiresOn?.ToString("MMM d, yyyy") ?? "—")</td></tr>
+    }
+    </tbody></table></div>
+    <form asp-action="Delete" asp-route-id="@Model.DonationId" method="post" onsubmit="return confirm('Delete this donation and its unused stock?');"><button class="btn btn-outline-danger">Delete donation</button><span class="small text-muted ms-2">Only possible while all donated stock is unused.</span></form>
+</div>

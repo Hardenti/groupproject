@@ -1,0 +1,20 @@
+@model IReadOnlyList<Household>
+@{ ViewData["Title"] = "Households"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">COMMUNITY</p><h1 class="h2 mb-0">Households</h1></div><a class="btn btn-primary" asp-action="Create">Register household</a></div>
+<partial name="_Alerts" />
+<div class="panel-card">
+    <form method="get" class="search-toolbar mb-3">
+        <div class="search-box"><label for="search" class="form-label">Search name, email, or phone</label><input id="search" name="search" value="@ViewBag.Search" class="form-control" /></div>
+        <div><label for="sort" class="form-label">Sort by</label><select id="sort" name="sort" class="form-select"><option value="name">Name</option><option value="size" selected="@(ViewBag.Sort == "size")">Household size</option><option value="oldest" selected="@(ViewBag.Sort == "oldest")">Registration date</option></select></div>
+        <button class="btn btn-outline-secondary">Search</button>
+    </form>
+    <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Primary contact</th><th>Household size</th><th>Email</th><th>Phone</th><th>Registered</th><th></th></tr></thead><tbody>
+    @foreach (Household household in Model)
+    {
+        <tr><td class="fw-semibold">@household.PrimaryContactName</td><td>@household.HouseholdSize</td><td>@(household.Email ?? "—")</td><td>@(household.Phone ?? "—")</td><td>@household.CreatedAt.ToLocalTime().ToString("MMM d, yyyy")</td>
+            <td class="text-end table-actions"><a asp-action="Edit" asp-route-id="@household.HouseholdId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                <form asp-action="Delete" asp-route-id="@household.HouseholdId" method="post" class="d-inline" onsubmit="return confirm('Delete this household?');"><button class="btn btn-sm btn-outline-danger">Delete</button></form></td></tr>
+    }
+    </tbody></table></div>
+    @if (Model.Count == 0) { <p class="empty-note mb-0">No households found.</p> }
+</div>

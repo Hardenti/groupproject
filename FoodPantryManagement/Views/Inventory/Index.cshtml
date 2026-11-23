@@ -1,0 +1,20 @@
+@model IReadOnlyList<InventoryLot>
+@{ ViewData["Title"] = "Inventory"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">STOCK MANAGEMENT</p><h1 class="h2 mb-0">Inventory</h1></div>
+    <div class="d-flex gap-2"><a class="btn btn-outline-secondary" asp-controller="Donations" asp-action="Create">Receive a donation</a><a class="btn btn-primary" asp-action="Create">Manual stock entry</a></div></div>
+<partial name="_Alerts" />
+<div class="panel-card">
+    <form method="get" class="search-toolbar mb-3"><div class="search-box"><label for="search" class="form-label">Search item or pantry</label><input id="search" name="search" value="@ViewBag.Search" class="form-control" /></div>
+        <div><label for="sort" class="form-label">Sort by</label><select id="sort" name="sort" class="form-select"><option value="expiry">Nearest expiry</option><option value="item" selected="@(ViewBag.Sort == "item")">Item name</option><option value="quantity" selected="@(ViewBag.Sort == "quantity")">Quantity</option></select></div><button class="btn btn-outline-secondary">Search</button></form>
+    <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Food item</th><th>Pantry</th><th>On hand</th><th>Received</th><th>Expiry</th><th></th></tr></thead><tbody>
+    @foreach (InventoryLot lot in Model)
+    {
+        bool expiresSoon = lot.ExpiresOn.HasValue && lot.ExpiresOn.Value.Date <= DateTime.Today.AddDays(7);
+        <tr><td class="fw-semibold">@lot.FoodItem?.Name</td><td>@lot.PantrySite?.Name</td><td>@lot.QuantityRemaining.ToString("0.##") @lot.FoodItem?.Unit</td><td>@lot.ReceivedAt.ToString("MMM d, yyyy")</td>
+            <td>@if (lot.ExpiresOn.HasValue) { <span class="@(expiresSoon ? "text-danger fw-semibold" : "")">@lot.ExpiresOn.Value.ToString("MMM d, yyyy")</span> } else { <span>—</span> }</td>
+            <td class="text-end table-actions"><a asp-action="Edit" asp-route-id="@lot.InventoryLotId" class="btn btn-sm btn-outline-secondary">Adjust</a>
+                <form asp-action="Delete" asp-route-id="@lot.InventoryLotId" method="post" class="d-inline" onsubmit="return confirm('Delete this inventory lot?');"><button class="btn btn-sm btn-outline-danger">Delete</button></form></td></tr>
+    }
+    </tbody></table></div>
+    @if (Model.Count == 0) { <p class="empty-note mb-0">No stock matched. Record a donation to add food to the shelves.</p> }
+</div>

@@ -1,0 +1,10 @@
+@model InventoryLot
+@{ ViewData["Title"] = "Adjust inventory"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">STOCK MANAGEMENT</p><h1 class="h2 mb-0">Adjust inventory</h1></div></div>
+<form asp-action="Edit" asp-route-id="@Model.InventoryLotId" method="post" class="form-panel">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <p class="mb-4"><strong>@Model.FoodItem?.Name</strong> at @Model.PantrySite?.Name<br /><span class="text-muted">Received @Model.QuantityReceived.ToString("0.##") @Model.FoodItem?.Unit</span></p>
+    <div class="mb-3"><label for="quantityRemaining" class="form-label">Quantity on hand</label><input id="quantityRemaining" name="quantityRemaining" value="@Model.QuantityRemaining.ToString(System.Globalization.CultureInfo.InvariantCulture)" type="number" min="0" max="@Model.QuantityReceived" step="0.01" class="form-control" required /><span asp-validation-for="QuantityRemaining" class="text-danger"></span></div>
+    <div class="mb-4"><label for="expiresOn" class="form-label">Expiry date</label><input id="expiresOn" name="expiresOn" value="@Model.ExpiresOn?.ToString("yyyy-MM-dd")" type="date" class="form-control" /></div>
+    <button class="btn btn-primary">Save changes</button> <a class="btn btn-link" asp-action="Index">Cancel</a>
+</form>

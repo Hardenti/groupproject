@@ -1,0 +1,119 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Pantry dashboard";
+}
+
+<section class="hero-panel mb-4">
+    <div>
+        <p class="eyebrow mb-2">COMMUNITY PANTRY OPERATIONS</p>
+        <h1 class="display-6 fw-bold mb-2">Good food, shared well.</h1>
+        <p class="mb-0 hero-copy">Track donations, protect fresh stock, and prepare household orders from one place.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-light btn-lg" asp-controller="Donations" asp-action="Create">＋ Record donation</a>
+        <a class="btn btn-outline-light btn-lg" asp-controller="Distributions" asp-action="Create">Prepare distribution</a>
+    </div>
+</section>
+
+<section class="row g-3 mb-4" aria-label="Pantry summary">
+    <div class="col-6 col-xl-3"><div class="metric-card"><span>Active food items</span><strong>@Model.ActiveFoodCount</strong><small>in the catalog</small></div></div>
+    <div class="col-6 col-xl-3"><div class="metric-card"><span>Households</span><strong>@Model.HouseholdCount</strong><small>registered for support</small></div></div>
+    <div class="col-6 col-xl-3"><div class="metric-card"><span>Low-stock items</span><strong>@Model.LowStockCount</strong><small>five units or fewer</small></div></div>
+    <div class="col-6 col-xl-3"><div class="metric-card"><span>Expiring soon</span><strong>@Model.ExpiringLotCount</strong><small>lots due within 7 days</small></div></div>
+</section>
+
+<div class="row g-4">
+    <section class="col-xl-7">
+        <div class="panel-card h-100">
+            <div class="panel-heading">
+                <div><p class="eyebrow mb-1">STOCK WATCH</p><h2 class="h4 mb-0">Items to keep an eye on</h2></div>
+                <a asp-controller="Inventory" asp-action="Index" class="btn btn-sm btn-outline-secondary">View inventory</a>
+            </div>
+            @if (Model.LowStockItems.Count == 0)
+            {
+                <p class="empty-note mb-0">No low-stock items right now. Thanks for keeping shelves stocked.</p>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead><tr><th>Food item</th><th>On hand</th><th>Nearest expiry</th><th>Status</th></tr></thead>
+                        <tbody>
+                        @foreach (StockSummary item in Model.LowStockItems)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@item.ItemName</td>
+                                <td>@item.Quantity.ToString("0.##") @item.Unit</td>
+                                <td>@(item.NearestExpiry?.ToString("MMM d, yyyy") ?? "—")</td>
+                                <td><span class="status-pill">Low stock</span></td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </section>
+    <section class="col-xl-5">
+        <div class="panel-card h-100">
+            <div class="panel-heading">
+                <div><p class="eyebrow mb-1">PICKUP PLANNING</p><h2 class="h4 mb-0">7-day weather</h2></div>
+                <span class="text-muted small">Open-Meteo · @Model.Weather?.Location</span>
+            </div>
+            @if (Model.Weather is null)
+            {
+                <p class="empty-note">Add a pantry site to see a local forecast.</p>
+            }
+            else if (Model.Weather.Error is not null)
+            {
+                <div class="alert alert-warning mb-0">@Model.Weather.Error</div>
+            }
+            else
+            {
+                <p class="text-muted small">Use rain and severe-weather outlooks to plan outdoor pickup lines and volunteer coverage.</p>
+                <div class="forecast-list">
+                @foreach (WeatherDay day in Model.Weather.Days)
+                {
+                    bool wetWeather = day.PrecipitationChance >= 60 || day.WeatherCode is 95 or 96 or 99;
+                    <div class="forecast-day">
+                        <span class="fw-semibold">@day.Date.ToString("ddd, MMM d")</span>
+                        <span>@day.MaximumCelsius.ToString("0") °C</span>
+                        <span class="@(wetWeather ? "weather-alert" : "text-muted")">
+                            @(day.PrecipitationChance.HasValue ? $"{day.PrecipitationChance}% rain" : "Rain chance n/a")
+                        </span>
+                    </div>
+                }
+                </div>
+                @if (Model.Weather.Days.Any(day => day.PrecipitationChance >= 60 || day.WeatherCode is 95 or 96 or 99))
+                {
+                    <div class="weather-note mt-3">Weather advisory: consider moving pickup indoors or adjusting volunteer plans.</div>
+                }
+            }
+        </div>
+    </section>
+</div>
+
+<section class="panel-card mt-4">
+    <div class="panel-heading">
+        <div><p class="eyebrow mb-1">RECENT ACTIVITY</p><h2 class="h4 mb-0">Household distributions</h2></div>
+        <a asp-controller="Distributions" asp-action="Index" class="btn btn-sm btn-outline-secondary">All distributions</a>
+    </div>
+    @if (Model.RecentDistributions.Count == 0)
+    {
+        <p class="empty-note mb-0">No distributions recorded yet. Create one when a household receives food.</p>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead><tr><th>Household</th><th>Date</th><th>Different items</th><th></th></tr></thead>
+                <tbody>
+                @foreach (RecentDistribution item in Model.RecentDistributions)
+                {
+                    <tr><td class="fw-semibold">@item.HouseholdName</td><td>@item.DistributedAt.ToString("MMM d, yyyy")</td><td>@item.ItemCount</td><td class="text-end"><span class="text-success fw-semibold">Completed</span></td></tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

@@ -1,0 +1,15 @@
+@model Distribution
+@{ ViewData["Title"] = "Distribution details"; }
+<div class="page-heading"><div><p class="eyebrow mb-1">HOUSEHOLD SUPPORT</p><h1 class="h2 mb-0">Distribution details</h1></div><a asp-action="Index" class="btn btn-outline-secondary">Back to distributions</a></div>
+<div class="panel-card">
+    <dl class="row mb-4"><dt class="col-sm-3">Household</dt><dd class="col-sm-9">@Model.Household?.PrimaryContactName</dd><dt class="col-sm-3">Pantry site</dt><dd class="col-sm-9">@Model.PantrySite?.Name</dd>
+        <dt class="col-sm-3">Distributed</dt><dd class="col-sm-9">@Model.DistributedAt.ToString("MMM d, yyyy h:mm tt")</dd><dt class="col-sm-3">Notes</dt><dd class="col-sm-9">@(Model.Notes ?? "—")</dd></dl>
+    <h2 class="h5">Items provided</h2>
+    <div class="table-responsive"><table class="table"><thead><tr><th>Food item</th><th>Quantity</th></tr></thead><tbody>
+    @foreach (DistributionLine line in Model.Lines)
+    {
+        <tr><td>@line.FoodItem?.Name</td><td>@line.Quantity.ToString("0.##") @line.FoodItem?.Unit</td></tr>
+    }
+    </tbody></table></div>
+    <a asp-action="Edit" asp-route-id="@Model.DistributionId" class="btn btn-primary">Edit distribution</a>
+</div>
